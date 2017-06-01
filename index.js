@@ -1,8 +1,6 @@
-import '@ciscospark/plugin-board';
-import '@ciscospark/plugin-conversation';
-import CiscoSpark from '@ciscospark/spark-core';
-import util from 'util';
-import {map, pick} from 'lodash';
+require('@ciscospark/internal-plugin-board');
+require('@ciscospark/internal-plugin-conversation');
+const CiscoSpark = require('@ciscospark/spark-core').default;
 
 const spark = new CiscoSpark({
   credentials: {
@@ -14,16 +12,16 @@ const spark = new CiscoSpark({
 
 
 // register the device is necessary
-spark.device.register()
+spark.internal.device.register()
 
   // list all of the conversations and choose one to get boards from.
-  .then(() => spark.conversation.list())
+  .then(() => spark.internal.conversation.list())
 
   // choose a conversations
   .then((conversations) => conversations[0])
 
   // create a new board
-  .then((conversation) => spark.board.createChannel(conversation))
+  .then((conversation) => spark.internal.board.createChannel(conversation))
 
   // display the board
   .then((board) => {
@@ -33,4 +31,4 @@ spark.device.register()
     return board;
   })
 
-  .then(() => spark.device.unregister())
+  .then(() => spark.internal.device.unregister())
